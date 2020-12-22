@@ -1,0 +1,23 @@
+name: PistonMute
+version: ${project.version}
+main: me.alexprogrammerde.pistonmute.PistonMute
+depend: [ PistonChat ]
+authors: [ AlexProgrammerDE ]
+description: Mute addon for PistonChat.
+website: https://pistonmaster.net/
+commands:
+  mute:
+    description: Mute a player!
+    usage: /<command> [player] [time}
+    permission: pistonmute.mute
+  unmute:
+    description: Unmute a player!
+    usage: /<command> [player]
+    permission: pistonmute.unmute
+permissions:
+  pistonmute.mute:
+    description: Permission to mute!
+    default: op
+  pistonmute.unmute:
+    description: Permission to unmute!
+    default: op
