@@ -28,39 +28,43 @@ public final class MuteCommand implements CommandExecutor, TabExecutor {
                 Player player = plugin.getServer().getPlayer(args[0]);
 
                 if (player != null) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(new Date());
+                    if (player != sender) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(new Date());
 
-                    if (args[2].toLowerCase().endsWith("d")) {
-                        int d = Integer.parseInt(args[2].toLowerCase().replaceAll("d", ""));
+                        if (args[2].toLowerCase().endsWith("d")) {
+                            int d = Integer.parseInt(args[2].toLowerCase().replaceAll("d", ""));
 
-                        calendar.add(Calendar.DAY_OF_WEEK, d);
-                    } else if (args[2].toLowerCase().endsWith("h")) {
-                        int h = Integer.parseInt(args[2].toLowerCase().replaceAll("h", ""));
+                            calendar.add(Calendar.DAY_OF_WEEK, d);
+                        } else if (args[2].toLowerCase().endsWith("h")) {
+                            int h = Integer.parseInt(args[2].toLowerCase().replaceAll("h", ""));
 
-                        calendar.add(Calendar.HOUR_OF_DAY, h);
-                    } else if (args[2].toLowerCase().endsWith("m")) {
-                        int m = Integer.parseInt(args[2].toLowerCase().replaceAll("m", ""));
+                            calendar.add(Calendar.HOUR_OF_DAY, h);
+                        } else if (args[2].toLowerCase().endsWith("m")) {
+                            int m = Integer.parseInt(args[2].toLowerCase().replaceAll("m", ""));
 
-                        calendar.add(Calendar.MINUTE, m);
-                    } else if (args[2].toLowerCase().endsWith("s")) {
-                        int s = Integer.parseInt(args[2].toLowerCase().replaceAll("s", ""));
+                            calendar.add(Calendar.MINUTE, m);
+                        } else if (args[2].toLowerCase().endsWith("s")) {
+                            int s = Integer.parseInt(args[2].toLowerCase().replaceAll("s", ""));
 
-                        calendar.add(Calendar.SECOND, s);
+                            calendar.add(Calendar.SECOND, s);
+                        } else {
+                            return false;
+                        }
+
+                        if (StorageTool.tempMutePlayer(player, calendar.getTime())) {
+                            sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+                            sender.spigot().sendMessage(new ComponentBuilder("PistonMute").color(ChatColor.GOLD).create());
+                            sender.spigot().sendMessage(new ComponentBuilder("Successfully muted " + player.getName() + "!").color(ChatColor.GREEN).create());
+                            sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+                        } else {
+                            sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+                            sender.spigot().sendMessage(new ComponentBuilder("PistonMute").color(ChatColor.GOLD).create());
+                            sender.spigot().sendMessage(new ComponentBuilder(player.getName() + " is already muted!").color(ChatColor.RED).create());
+                            sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+                        }
                     } else {
-                        return false;
-                    }
-
-                    if (StorageTool.tempMutePlayer(player, calendar.getTime())) {
-                        sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
-                        sender.spigot().sendMessage(new ComponentBuilder("PistonMute").color(ChatColor.GOLD).create());
-                        sender.spigot().sendMessage(new ComponentBuilder("Successfully muted " + player.getName() + "!").color(ChatColor.GREEN).create());
-                        sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
-                    } else {
-                        sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
-                        sender.spigot().sendMessage(new ComponentBuilder("PistonMute").color(ChatColor.GOLD).create());
-                        sender.spigot().sendMessage(new ComponentBuilder(player.getName() + " is already muted!").color(ChatColor.RED).create());
-                        sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+                        sender.sendMessage("Please don't mute yourself!");
                     }
                 } else {
                     return false;

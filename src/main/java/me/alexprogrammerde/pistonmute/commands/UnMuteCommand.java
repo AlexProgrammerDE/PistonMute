@@ -29,16 +29,20 @@ public final class UnMuteCommand implements CommandExecutor, TabExecutor {
             Player player = plugin.getServer().getPlayer(args[0]);
 
             if (player != null) {
-                if (StorageTool.unMutePlayer(player)) {
-                    sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
-                    sender.spigot().sendMessage(new ComponentBuilder("PistonMute").color(ChatColor.GOLD).create());
-                    sender.spigot().sendMessage(new ComponentBuilder("Successfully unmuted " + player.getName() + "!").color(ChatColor.GREEN).create());
-                    sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+                if (player != sender) {
+                    if (StorageTool.unMutePlayer(player)) {
+                        sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+                        sender.spigot().sendMessage(new ComponentBuilder("PistonMute").color(ChatColor.GOLD).create());
+                        sender.spigot().sendMessage(new ComponentBuilder("Successfully unmuted " + player.getName() + "!").color(ChatColor.GREEN).create());
+                        sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+                    } else {
+                        sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+                        sender.spigot().sendMessage(new ComponentBuilder("PistonMute").color(ChatColor.GOLD).create());
+                        sender.spigot().sendMessage(new ComponentBuilder(player.getName() + " wasn't muted!").color(ChatColor.RED).create());
+                        sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+                    }
                 } else {
-                    sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
-                    sender.spigot().sendMessage(new ComponentBuilder("PistonMute").color(ChatColor.GOLD).create());
-                    sender.spigot().sendMessage(new ComponentBuilder(player.getName() + " wasn't muted!").color(ChatColor.RED).create());
-                    sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+                    sender.sendMessage("Please don't mute yourself!");
                 }
             }
         }
@@ -48,7 +52,7 @@ public final class UnMuteCommand implements CommandExecutor, TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (args.length  == 1) {
+        if (args.length == 1) {
             List<String> players = new ArrayList<>();
 
             for (Player player : Bukkit.getOnlinePlayers()) {
