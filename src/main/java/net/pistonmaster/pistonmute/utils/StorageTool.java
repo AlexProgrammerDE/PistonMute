@@ -1,6 +1,6 @@
-package me.alexprogrammerde.pistonmute.utils;
+package net.pistonmaster.pistonmute.utils;
 
-import me.alexprogrammerde.pistonmute.PistonMute;
+import net.pistonmaster.pistonmute.PistonMute;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -56,7 +56,7 @@ public final class StorageTool {
         }
     }
 
-    public static boolean isSMuted(Player player) {
+    public static boolean isMuted(Player player) {
         manageMute(player);
 
         return dataConfig.contains(player.getUniqueId().toString());

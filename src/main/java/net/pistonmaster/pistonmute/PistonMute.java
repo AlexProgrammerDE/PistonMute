@@ -1,8 +1,9 @@
-package me.alexprogrammerde.pistonmute;
+package net.pistonmaster.pistonmute;
 
-import me.alexprogrammerde.pistonmute.commands.MuteCommand;
-import me.alexprogrammerde.pistonmute.commands.UnMuteCommand;
-import me.alexprogrammerde.pistonmute.listeners.PistonChatListener;
+import net.pistonmaster.pistonmute.commands.MuteCommand;
+import net.pistonmaster.pistonmute.commands.UnMuteCommand;
+import net.pistonmaster.pistonmute.listeners.PistonChatListener;
+import net.pistonmaster.pistonmute.utils.StorageTool;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -12,6 +13,9 @@ public final class PistonMute extends JavaPlugin {
     @Override
     public void onEnable() {
         Logger log = getLogger();
+
+        log.info(ChatColor.YELLOW + "Loading config");
+        new StorageTool().setupTool(this);
 
         log.info(ChatColor.YELLOW + "Registering command");
         getServer().getPluginCommand("mute").setExecutor(new MuteCommand(this));
@@ -23,7 +27,4 @@ public final class PistonMute extends JavaPlugin {
         log.info(ChatColor.YELLOW + "Registering chat listener");
         getServer().getPluginManager().registerEvents(new PistonChatListener(), this);
     }
-
-    @Override
-    public void onDisable() {}
 }

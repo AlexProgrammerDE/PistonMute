@@ -1,7 +1,7 @@
-package me.alexprogrammerde.pistonmute.commands;
+package net.pistonmaster.pistonmute.commands;
 
-import me.alexprogrammerde.pistonmute.PistonMute;
-import me.alexprogrammerde.pistonmute.utils.StorageTool;
+import net.pistonmaster.pistonmute.PistonMute;
+import net.pistonmaster.pistonmute.utils.StorageTool;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Bukkit;
@@ -45,9 +45,11 @@ public final class UnMuteCommand implements CommandExecutor, TabExecutor {
                     sender.sendMessage("Please don't mute yourself!");
                 }
             }
+        } else {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     @Override

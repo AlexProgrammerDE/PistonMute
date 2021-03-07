@@ -6,7 +6,7 @@
 
     <groupId>me.alexprogrammerde</groupId>
     <artifactId>PistonMute</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>PistonMute</name>
@@ -101,9 +101,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>me.alexprogrammerde</groupId>
+            <groupId>net.pistonmaster</groupId>
             <artifactId>PistonChat</artifactId>
-            <version>1.0.0</version>
+            <version>1.3.1</version>
         </dependency>
     </dependencies>
 </project>

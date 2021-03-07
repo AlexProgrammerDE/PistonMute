@@ -1,14 +1,14 @@
-package me.alexprogrammerde.pistonmute.listeners;
+package net.pistonmaster.pistonmute.listeners;
 
-import me.alexprogrammerde.pistonchat.api.PistonChatEvent;
-import me.alexprogrammerde.pistonmute.utils.StorageTool;
+import net.pistonmaster.pistonchat.api.PistonChatEvent;
+import net.pistonmaster.pistonmute.utils.StorageTool;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 public final class PistonChatListener implements Listener {
     @EventHandler
     public void onChat(PistonChatEvent event) {
-        if (StorageTool.isSMuted(event.getPlayer())) {
+        if (StorageTool.isMuted(event.getPlayer())) {
             event.setCancelled(true);
         }
     }

@@ -1,7 +1,7 @@
-package me.alexprogrammerde.pistonmute.commands;
+package net.pistonmaster.pistonmute.commands;
 
-import me.alexprogrammerde.pistonmute.PistonMute;
-import me.alexprogrammerde.pistonmute.utils.StorageTool;
+import net.pistonmaster.pistonmute.PistonMute;
+import net.pistonmaster.pistonmute.utils.StorageTool;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Bukkit;
@@ -24,28 +24,28 @@ public final class MuteCommand implements CommandExecutor, TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length > 0) {
-            if (args.length > 1) {
-                Player player = plugin.getServer().getPlayer(args[0]);
+            Player player = plugin.getServer().getPlayer(args[0]);
 
-                if (player != null) {
-                    if (player != sender) {
+            if (player != null) {
+                if (player != sender) {
+                    if (args.length > 1) {
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(new Date());
 
-                        if (args[2].toLowerCase().endsWith("d")) {
-                            int d = Integer.parseInt(args[2].toLowerCase().replaceAll("d", ""));
+                        if (args[1].toLowerCase().endsWith("d")) {
+                            int d = Integer.parseInt(args[1].toLowerCase().replaceAll("d", ""));
 
                             calendar.add(Calendar.DAY_OF_WEEK, d);
-                        } else if (args[2].toLowerCase().endsWith("h")) {
-                            int h = Integer.parseInt(args[2].toLowerCase().replaceAll("h", ""));
+                        } else if (args[1].toLowerCase().endsWith("h")) {
+                            int h = Integer.parseInt(args[1].toLowerCase().replaceAll("h", ""));
 
                             calendar.add(Calendar.HOUR_OF_DAY, h);
-                        } else if (args[2].toLowerCase().endsWith("m")) {
-                            int m = Integer.parseInt(args[2].toLowerCase().replaceAll("m", ""));
+                        } else if (args[1].toLowerCase().endsWith("m")) {
+                            int m = Integer.parseInt(args[1].toLowerCase().replaceAll("m", ""));
 
                             calendar.add(Calendar.MINUTE, m);
-                        } else if (args[2].toLowerCase().endsWith("s")) {
-                            int s = Integer.parseInt(args[2].toLowerCase().replaceAll("s", ""));
+                        } else if (args[1].toLowerCase().endsWith("s")) {
+                            int s = Integer.parseInt(args[1].toLowerCase().replaceAll("s", ""));
 
                             calendar.add(Calendar.SECOND, s);
                         } else {
@@ -64,10 +64,10 @@ public final class MuteCommand implements CommandExecutor, TabExecutor {
                             sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
                         }
                     } else {
-                        sender.sendMessage("Please don't mute yourself!");
+                        return false;
                     }
                 } else {
-                    return false;
+                    sender.sendMessage("Please don't mute yourself!");
                 }
             } else {
                 return false;
