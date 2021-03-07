@@ -1,6 +1,6 @@
 name: PistonMute
 version: ${project.version}
-main: me.alexprogrammerde.pistonmute.PistonMute
+main: net.pistonmaster.pistonmute.PistonMute
 depend: [ PistonChat ]
 authors: [ AlexProgrammerDE ]
 description: Mute addon for PistonChat.
