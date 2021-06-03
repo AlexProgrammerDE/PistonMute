@@ -53,7 +53,7 @@ public final class StorageTool {
         manageMute(player);
 
         if (!dataConfig.getStringList("hardmutes").contains(player.getUniqueId().toString())) {
-            dataConfig.set("hardmutes", Stream.concat(dataConfig.getStringList("hardmutes").stream(), Stream.of(player.getUniqueId().toString())));
+            dataConfig.set("hardmutes", Stream.concat(dataConfig.getStringList("hardmutes").stream(), Stream.of(player.getUniqueId().toString())).collect(Collectors.toList()));
 
             saveData();
 
@@ -143,7 +143,7 @@ public final class StorageTool {
     }
 
     public static void setupTool(PistonMute plugin) {
-        if (plugin == null || StorageTool.plugin == null)
+        if (plugin == null || StorageTool.plugin != null)
             return;
 
         StorageTool.plugin = plugin;
