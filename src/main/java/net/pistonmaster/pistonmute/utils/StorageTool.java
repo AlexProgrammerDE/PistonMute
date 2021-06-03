@@ -129,14 +129,13 @@ public final class StorageTool {
     }
 
     private static void generateFile() {
-        if (!plugin.getDataFolder().exists()) {
-            if (!plugin.getDataFolder().mkdir())
-                return;
-        }
+        if (!plugin.getDataFolder().exists() && !plugin.getDataFolder().mkdir())
+            new IOException("File already exists.").printStackTrace();
 
         if (!dataFile.exists()) {
             try {
-                dataFile.createNewFile();
+                if (dataFile.createNewFile())
+                    new IOException("File already exists.").printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 /**
  * Class to interact with PistonChat!
  */
+@SuppressWarnings("unused")
 public final class MuteAPI {
     private MuteAPI() {
     }
