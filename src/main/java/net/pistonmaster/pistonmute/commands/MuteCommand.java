@@ -1,9 +1,9 @@
 package net.pistonmaster.pistonmute.commands;
 
-import net.pistonmaster.pistonmute.PistonMute;
-import net.pistonmaster.pistonmute.utils.StorageTool;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.pistonmaster.pistonmute.PistonMute;
+import net.pistonmaster.pistonmute.utils.StorageTool;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -33,19 +33,19 @@ public final class MuteCommand implements CommandExecutor, TabExecutor {
                         calendar.setTime(new Date());
 
                         if (args[1].toLowerCase().endsWith("d")) {
-                            int d = Integer.parseInt(args[1].toLowerCase().replaceAll("d", ""));
+                            int d = Integer.parseInt(args[1].toLowerCase().replace("d", ""));
 
                             calendar.add(Calendar.DAY_OF_WEEK, d);
                         } else if (args[1].toLowerCase().endsWith("h")) {
-                            int h = Integer.parseInt(args[1].toLowerCase().replaceAll("h", ""));
+                            int h = Integer.parseInt(args[1].toLowerCase().replace("h", ""));
 
                             calendar.add(Calendar.HOUR_OF_DAY, h);
                         } else if (args[1].toLowerCase().endsWith("m")) {
-                            int m = Integer.parseInt(args[1].toLowerCase().replaceAll("m", ""));
+                            int m = Integer.parseInt(args[1].toLowerCase().replace("m", ""));
 
                             calendar.add(Calendar.MINUTE, m);
                         } else if (args[1].toLowerCase().endsWith("s")) {
-                            int s = Integer.parseInt(args[1].toLowerCase().replaceAll("s", ""));
+                            int s = Integer.parseInt(args[1].toLowerCase().replace("s", ""));
 
                             calendar.add(Calendar.SECOND, s);
                         } else {
@@ -53,21 +53,19 @@ public final class MuteCommand implements CommandExecutor, TabExecutor {
                         }
 
                         if (StorageTool.tempMutePlayer(player, calendar.getTime())) {
-                            sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
-                            sender.spigot().sendMessage(new ComponentBuilder("PistonMute").color(ChatColor.GOLD).create());
-                            sender.spigot().sendMessage(new ComponentBuilder("Successfully muted " + player.getName() + "!").color(ChatColor.GREEN).create());
-                            sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+                            successMessage(sender, player);
                         } else {
-                            sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
-                            sender.spigot().sendMessage(new ComponentBuilder("PistonMute").color(ChatColor.GOLD).create());
-                            sender.spigot().sendMessage(new ComponentBuilder(player.getName() + " is already muted!").color(ChatColor.RED).create());
-                            sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+                            alreadyMutedMessage(sender, player);
                         }
                     } else {
-                        return false;
+                        if (StorageTool.hardMutePlayer(player)) {
+                            successMessage(sender, player);
+                        } else {
+                            alreadyMutedMessage(sender, player);
+                        }
                     }
                 } else {
-                    sender.sendMessage("Please don't mute yourself!");
+                    sender.sendMessage("You can't mute yourself!");
                 }
             } else {
                 return false;
@@ -77,6 +75,20 @@ public final class MuteCommand implements CommandExecutor, TabExecutor {
         }
 
         return true;
+    }
+
+    private void alreadyMutedMessage(CommandSender sender, Player player) {
+        sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+        sender.spigot().sendMessage(new ComponentBuilder("PistonMute").color(ChatColor.GOLD).create());
+        sender.spigot().sendMessage(new ComponentBuilder(player.getName() + " is already muted!").color(ChatColor.RED).create());
+        sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+    }
+
+    private void successMessage(CommandSender sender, Player player) {
+        sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+        sender.spigot().sendMessage(new ComponentBuilder("PistonMute").color(ChatColor.GOLD).create());
+        sender.spigot().sendMessage(new ComponentBuilder("Successfully muted " + player.getName() + "!").color(ChatColor.GREEN).create());
+        sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
     }
 
     @Override

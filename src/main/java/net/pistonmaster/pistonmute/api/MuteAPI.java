@@ -7,10 +7,12 @@ import org.bukkit.entity.Player;
  * Class to interact with PistonChat!
  */
 public final class MuteAPI {
-    private MuteAPI() {}
+    private MuteAPI() {
+    }
 
     /**
      * Check if a player is muted.
+     *
      * @param player The player to check
      * @return If the player is muted
      */

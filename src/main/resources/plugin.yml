@@ -8,7 +8,7 @@ website: https://pistonmaster.net/
 commands:
   mute:
     description: Mute a player!
-    usage: /<command> [player] [time]
+    usage: /<command> [player] <time>
     permission: pistonmute.mute
   unmute:
     description: Unmute a player!

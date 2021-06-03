@@ -11,17 +11,22 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class StorageTool {
     private static PistonMute plugin;
     private static FileConfiguration dataConfig;
     private static File dataFile;
 
+    private StorageTool() {
+    }
+
     /**
-     * Mute a player!
+     * Mute a player temporarily!
      *
-     * @param player The player to shadowban.
-     * @param date   The date when he will be unbanned.
+     * @param player The player to mute.
+     * @param date   The date when the player will be unmuted.
      * @return true if player got muted and if already muted false.
      */
     public static boolean tempMutePlayer(Player player, Date date) {
@@ -29,6 +34,26 @@ public final class StorageTool {
 
         if (!dataConfig.contains(player.getUniqueId().toString())) {
             dataConfig.set(player.getUniqueId().toString(), date.toString());
+
+            saveData();
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Mute a player!
+     *
+     * @param player The player to mute.
+     * @return true if player got muted and if already muted false.
+     */
+    public static boolean hardMutePlayer(Player player) {
+        manageMute(player);
+
+        if (!dataConfig.getStringList("hardmutes").contains(player.getUniqueId().toString())) {
+            dataConfig.set("hardmutes", Stream.concat(dataConfig.getStringList("hardmutes").stream(), Stream.of(player.getUniqueId().toString())));
 
             saveData();
 
@@ -51,7 +76,14 @@ public final class StorageTool {
             saveData();
 
             return true;
+        } else if (dataConfig.getStringList("hardmutes").contains(player.getUniqueId().toString())) {
+            dataConfig.set("hardmutes", dataConfig.getStringList("hardmutes").stream().filter(uuid -> !uuid.equals(player.getUniqueId().toString())).collect(Collectors.toList()));
+
+            saveData();
+
+            return true;
         } else {
+
             return false;
         }
     }
@@ -59,7 +91,7 @@ public final class StorageTool {
     public static boolean isMuted(Player player) {
         manageMute(player);
 
-        return dataConfig.contains(player.getUniqueId().toString());
+        return dataConfig.contains(player.getUniqueId().toString()) || dataConfig.getStringList("hardmutes").contains(player.getUniqueId().toString());
     }
 
     private static void manageMute(Player player) {
@@ -111,7 +143,10 @@ public final class StorageTool {
         }
     }
 
-    public void setupTool(PistonMute plugin) {
+    public static void setupTool(PistonMute plugin) {
+        if (plugin == null || StorageTool.plugin == null)
+            return;
+
         StorageTool.plugin = plugin;
         StorageTool.dataFile = new File(plugin.getDataFolder(), "data.yml");
 

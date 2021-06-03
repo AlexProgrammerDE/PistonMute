@@ -1,9 +1,9 @@
 package net.pistonmaster.pistonmute.commands;
 
-import net.pistonmaster.pistonmute.PistonMute;
-import net.pistonmaster.pistonmute.utils.StorageTool;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.pistonmaster.pistonmute.PistonMute;
+import net.pistonmaster.pistonmute.utils.StorageTool;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

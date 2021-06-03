@@ -15,7 +15,7 @@ public final class PistonMute extends JavaPlugin {
         Logger log = getLogger();
 
         log.info(ChatColor.YELLOW + "Loading config");
-        new StorageTool().setupTool(this);
+        StorageTool.setupTool(this);
 
         log.info(ChatColor.YELLOW + "Registering command");
         getServer().getPluginCommand("mute").setExecutor(new MuteCommand(this));
