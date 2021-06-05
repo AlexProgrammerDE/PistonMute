@@ -17,6 +17,8 @@ public final class PistonChatListener implements Listener {
 
     @EventHandler
     public void onChat(PistonWhisperEvent event) {
+        if (event.getSender() == event.getReceiver()) return;
+
         if (event.getSender() instanceof Player && StorageTool.isMuted((Player) event.getSender())) {
             event.setCancelled(true);
         }
