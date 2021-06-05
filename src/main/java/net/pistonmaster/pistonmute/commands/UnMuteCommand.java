@@ -1,5 +1,6 @@
 package net.pistonmaster.pistonmute.commands;
 
+import lombok.RequiredArgsConstructor;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.pistonmaster.pistonmute.PistonMute;
@@ -16,12 +17,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@RequiredArgsConstructor
 public final class UnMuteCommand implements CommandExecutor, TabExecutor {
     private final PistonMute plugin;
-
-    public UnMuteCommand(PistonMute plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
