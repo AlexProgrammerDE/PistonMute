@@ -134,7 +134,7 @@ public final class StorageTool {
 
         if (!dataFile.exists()) {
             try {
-                if (dataFile.createNewFile())
+                if (!dataFile.createNewFile())
                     new IOException("File already exists.").printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
