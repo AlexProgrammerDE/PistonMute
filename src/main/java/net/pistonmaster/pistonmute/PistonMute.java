@@ -20,6 +20,7 @@ public final class PistonMute extends JavaPlugin {
         Logger log = getLogger();
 
         log.info(ChatColor.YELLOW + "Loading config");
+        saveDefaultConfig();
         StorageTool.setupTool(this);
 
         log.info(ChatColor.YELLOW + "Registering commands");
@@ -30,7 +31,7 @@ public final class PistonMute extends JavaPlugin {
         getServer().getPluginCommand("unmute").setTabCompleter(new UnMuteCommand(this));
 
         log.info(ChatColor.YELLOW + "Registering listeners");
-        getServer().getPluginManager().registerEvents(new PistonChatListener(), this);
+        getServer().getPluginManager().registerEvents(new PistonChatListener(this), this);
 
         log.info(ChatColor.YELLOW + "Loading metrics");
         new Metrics(this, 11559);

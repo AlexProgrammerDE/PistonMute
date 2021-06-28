@@ -6,7 +6,7 @@
 
     <groupId>net.pistonmaster</groupId>
     <artifactId>PistonMute</artifactId>
-    <version>1.1.1</version>
+    <version>1.2.0</version>
     <packaging>jar</packaging>
 
     <name>PistonMute</name>
@@ -95,6 +95,7 @@
                 <version>3.1.2</version>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.1.0</version>
                 <executions>
@@ -139,7 +140,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.AlexProgrammerDE</groupId>
+            <groupId>net.pistonmaster</groupId>
             <artifactId>PistonChat</artifactId>
             <version>1.5.1</version>
             <scope>provided</scope>
