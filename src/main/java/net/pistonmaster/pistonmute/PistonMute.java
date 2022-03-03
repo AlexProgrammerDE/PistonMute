@@ -37,7 +37,7 @@ public final class PistonMute extends JavaPlugin {
         new Metrics(this, 11559);
 
         log.info(ChatColor.YELLOW + "Checking for a newer version");
-        new UpdateChecker(new PistonLogger(getLogger())).getVersion("https://www.pistonmaster.net/PistonMute/VERSION.txt", version -> new UpdateParser(getDescription().getVersion(), version).parseUpdate(updateType -> {
+        new UpdateChecker(new PistonLogger(getLogger()::info, getLogger()::warning)).getVersion("https://www.pistonmaster.net/PistonMute/VERSION.txt", version -> new UpdateParser(getDescription().getVersion(), version).parseUpdate(updateType -> {
             if (updateType == UpdateType.NONE || updateType == UpdateType.AHEAD) {
                 log.info(ChatColor.YELLOW + "You're up to date!");
             } else {
