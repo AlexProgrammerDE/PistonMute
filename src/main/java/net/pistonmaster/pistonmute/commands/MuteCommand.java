@@ -30,7 +30,11 @@ public final class MuteCommand implements CommandExecutor, TabExecutor {
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(new Date());
 
-                        if (args[1].toLowerCase().endsWith("d")) {
+                        if (args[1].toLowerCase().endsWith("y")) {
+                            int d = Integer.parseInt(args[1].toLowerCase().replace("y", ""));
+
+                            calendar.add(Calendar.YEAR, d);
+                        } else if (args[1].toLowerCase().endsWith("d")) {
                             int d = Integer.parseInt(args[1].toLowerCase().replace("d", ""));
 
                             calendar.add(Calendar.DAY_OF_WEEK, d);
