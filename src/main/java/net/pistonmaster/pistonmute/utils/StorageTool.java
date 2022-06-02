@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,15 +26,15 @@ public final class StorageTool {
     /**
      * Mute a player temporarily!
      *
-     * @param player The player to mute.
+     * @param uuid The player to mute.
      * @param date   The date when the player will be unmuted.
      * @return true if player got muted and if already muted false.
      */
-    public static boolean tempMutePlayer(Player player, Date date) {
-        manageMute(player);
+    public static boolean tempMutePlayer(UUID uuid, Date date) {
+        manageMute(uuid);
 
-        if (!dataConfig.contains(player.getUniqueId().toString())) {
-            dataConfig.set(player.getUniqueId().toString(), date.toString());
+        if (!dataConfig.contains(uuid.toString())) {
+            dataConfig.set(uuid.toString(), date.toString());
 
             saveData();
 
@@ -46,14 +47,14 @@ public final class StorageTool {
     /**
      * Mute a player!
      *
-     * @param player The player to mute.
+     * @param uuid The player to mute.
      * @return true if player got muted and if already muted false.
      */
-    public static boolean hardMutePlayer(Player player) {
-        manageMute(player);
+    public static boolean hardMutePlayer(UUID uuid) {
+        manageMute(uuid);
 
-        if (!dataConfig.getStringList("hardmutes").contains(player.getUniqueId().toString())) {
-            dataConfig.set("hardmutes", Stream.concat(dataConfig.getStringList("hardmutes").stream(), Stream.of(player.getUniqueId().toString())).collect(Collectors.toList()));
+        if (!dataConfig.getStringList("hardmutes").contains(uuid.toString())) {
+            dataConfig.set("hardmutes", Stream.concat(dataConfig.getStringList("hardmutes").stream(), Stream.of(uuid.toString())).collect(Collectors.toList()));
 
             saveData();
 
@@ -66,18 +67,18 @@ public final class StorageTool {
     /**
      * Unmute a player!
      *
-     * @param player The player to unmute.
+     * @param uuid The player to unmute.
      * @return true if player got unmuted and false if not was muted.
      */
-    public static boolean unMutePlayer(Player player) {
-        if (dataConfig.contains(player.getUniqueId().toString())) {
-            dataConfig.set(player.getUniqueId().toString(), null);
+    public static boolean unMutePlayer(UUID uuid) {
+        if (dataConfig.contains(uuid.toString())) {
+            dataConfig.set(uuid.toString(), null);
 
             saveData();
 
             return true;
-        } else if (dataConfig.getStringList("hardmutes").contains(player.getUniqueId().toString())) {
-            dataConfig.set("hardmutes", dataConfig.getStringList("hardmutes").stream().filter(uuid -> !uuid.equals(player.getUniqueId().toString())).collect(Collectors.toList()));
+        } else if (dataConfig.getStringList("hardmutes").contains(uuid.toString())) {
+            dataConfig.set("hardmutes", dataConfig.getStringList("hardmutes").stream().filter(u -> !u.equals(uuid.toString())).collect(Collectors.toList()));
 
             saveData();
 
@@ -88,23 +89,29 @@ public final class StorageTool {
         }
     }
 
-    public static boolean isMuted(Player player) {
-        manageMute(player);
+    public static boolean isMuted(UUID uuid) {
+        manageMute(uuid);
 
-        return dataConfig.contains(player.getUniqueId().toString()) || dataConfig.getStringList("hardmutes").contains(player.getUniqueId().toString());
+        return dataConfig.contains(uuid.toString()) || isHardMuted(uuid);
     }
 
-    private static void manageMute(Player player) {
+    public static boolean isHardMuted(UUID uuid) {
+        manageMute(uuid);
+
+        return dataConfig.getStringList("hardmutes").contains(uuid.toString());
+    }
+
+    private static void manageMute(UUID uuid) {
         Date now = new Date();
 
-        if (dataConfig.contains(player.getUniqueId().toString())) {
+        if (dataConfig.contains(uuid.toString())) {
             SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", new Locale("us"));
 
             try {
-                Date date = sdf.parse(dataConfig.getString(player.getUniqueId().toString()));
+                Date date = sdf.parse(dataConfig.getString(uuid.toString()));
 
                 if (now.after(date) || (now.equals(date))) {
-                    unMutePlayer(player);
+                    unMutePlayer(uuid);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
