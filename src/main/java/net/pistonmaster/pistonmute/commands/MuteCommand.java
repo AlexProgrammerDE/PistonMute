@@ -30,8 +30,8 @@ public final class MuteCommand implements CommandExecutor, TabExecutor {
             }
 
             if (args[0].matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")) {
-                name = MojangUtil.getName(args[0]);
                 uuid = UUID.fromString(args[0]);
+                name = MojangUtil.getName(uuid);
             } else {
                 Player player = plugin.getServer().getPlayer(args[0]);
 

@@ -22,43 +22,47 @@ public final class UnMuteCommand implements CommandExecutor, TabExecutor {
     private final PistonMute plugin;
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(CommandSender s, Command command, String label, String[] args) {
         if (args.length > 0) {
-            @Nullable UUID uuid = null;
-            @Nullable UUID senderUUID = null;
-            @Nullable String name = null;
 
-            if (sender instanceof Player) {
-                senderUUID = ((Player) sender).getUniqueId();
+            UUID uuid;
+            UUID sender;
+            String name;
+
+            if (s instanceof Player) {
+                sender = ((Player) s).getUniqueId();
+            } else {
+                sender = null;
             }
 
-            if (args[0].matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")) {
-                name = MojangUtil.getName(args[0]);
-                uuid = UUID.fromString(args[0]);
-            } else {
-                Player player = plugin.getServer().getPlayer(args[0]);
+            final Player player = plugin.getServer().getPlayer(args[0]);
 
-                if (player != null) {
-                    name = player.getName();
-                    uuid = player.getUniqueId();
-                }
+            if (args[0].matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")) {
+                uuid = UUID.fromString(args[0]);
+                name = MojangUtil.getName(uuid);
+            } else if (player != null) {
+                name = player.getName();
+                uuid = player.getUniqueId();
+            } else {
+                name = args[0];
+                uuid = MojangUtil.getUUID(args[0]);
             }
 
             if (uuid != null) {
-                if (uuid != senderUUID || sender instanceof ConsoleCommandSender) {
+                if (uuid != sender || s instanceof ConsoleCommandSender) {
                     if (StorageTool.unMutePlayer(uuid)) {
-                        sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
-                        sender.spigot().sendMessage(new ComponentBuilder("PistonMute").color(ChatColor.GOLD).create());
-                        sender.spigot().sendMessage(new ComponentBuilder("Successfully unmuted " + name + "!").color(ChatColor.GREEN).create());
-                        sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+                        s.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+                        s.spigot().sendMessage(new ComponentBuilder("PistonMute").color(ChatColor.GOLD).create());
+                        s.spigot().sendMessage(new ComponentBuilder("Successfully unmuted " + name + "!").color(ChatColor.GREEN).create());
+                        s.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
                     } else {
-                        sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
-                        sender.spigot().sendMessage(new ComponentBuilder("PistonMute").color(ChatColor.GOLD).create());
-                        sender.spigot().sendMessage(new ComponentBuilder(name + " wasn't muted!").color(ChatColor.RED).create());
-                        sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+                        s.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
+                        s.spigot().sendMessage(new ComponentBuilder("PistonMute").color(ChatColor.GOLD).create());
+                        s.spigot().sendMessage(new ComponentBuilder(name + " wasn't muted!").color(ChatColor.RED).create());
+                        s.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
                     }
                 } else {
-                    sender.sendMessage("Please don't mute yourself!");
+                    s.sendMessage("You cannot unmute yourself!");
                 }
             }
         } else {
