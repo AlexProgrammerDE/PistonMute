@@ -1,5 +1,6 @@
 package net.pistonmaster.pistonmute;
 
+import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
 import net.pistonmaster.pistonmute.commands.MuteCommand;
 import net.pistonmaster.pistonmute.commands.UnMuteCommand;
@@ -15,9 +16,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.logging.Logger;
 
 public final class PistonMute extends JavaPlugin {
+
+    @Getter
+    public static Logger log;
+
     @Override
     public void onEnable() {
-        Logger log = getLogger();
+        log = getLogger();
 
         log.info(ChatColor.YELLOW + "Loading config");
         saveDefaultConfig();

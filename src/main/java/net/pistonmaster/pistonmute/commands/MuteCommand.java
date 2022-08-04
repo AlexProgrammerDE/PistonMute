@@ -4,15 +4,14 @@ import lombok.RequiredArgsConstructor;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.pistonmaster.pistonmute.PistonMute;
+import net.pistonmaster.pistonmute.utils.MojangUtil;
 import net.pistonmaster.pistonmute.utils.StorageTool;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -22,10 +21,28 @@ public final class MuteCommand implements CommandExecutor, TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length > 0) {
-            Player player = plugin.getServer().getPlayer(args[0]);
+            @Nullable UUID uuid = null;
+            @Nullable UUID senderUUID = null;
+            @Nullable String name = null;
 
-            if (player != null) {
-                if (player != sender) {
+            if (sender instanceof Player) {
+                senderUUID = ((Player) sender).getUniqueId();
+            }
+
+            if (args[0].matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")) {
+                uuid = UUID.fromString(args[0]);
+                name = MojangUtil.getName(uuid);
+            } else {
+                Player player = plugin.getServer().getPlayer(args[0]);
+
+                if (player != null) {
+                    name = player.getName();
+                    uuid = player.getUniqueId();
+                }
+            }
+
+            if (uuid != null) {
+                if (uuid != senderUUID || sender instanceof ConsoleCommandSender) {
                     if (args.length > 1) {
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(new Date());
@@ -54,22 +71,23 @@ public final class MuteCommand implements CommandExecutor, TabExecutor {
                             return false;
                         }
 
-                        if (StorageTool.tempMutePlayer(player, calendar.getTime())) {
-                            successMessage(sender, player);
+                        if (StorageTool.tempMutePlayer(uuid, calendar.getTime())) {
+                            successMessage(sender, name);
                         } else {
-                            alreadyMutedMessage(sender, player);
+                            alreadyMutedMessage(sender, name);
                         }
                     } else {
-                        if (StorageTool.hardMutePlayer(player)) {
-                            successMessage(sender, player);
+                        if (StorageTool.hardMutePlayer(uuid)) {
+                            successMessage(sender, name);
                         } else {
-                            alreadyMutedMessage(sender, player);
+                            alreadyMutedMessage(sender, name);
                         }
                     }
                 } else {
                     sender.sendMessage("You can't mute yourself!");
                 }
             } else {
+                sender.sendMessage("Could not mute player!");
                 return false;
             }
         } else {
@@ -79,17 +97,17 @@ public final class MuteCommand implements CommandExecutor, TabExecutor {
         return true;
     }
 
-    private void alreadyMutedMessage(CommandSender sender, Player player) {
+    private void alreadyMutedMessage(CommandSender sender, String name) {
         sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
         sender.spigot().sendMessage(new ComponentBuilder("PistonMute").color(ChatColor.GOLD).create());
-        sender.spigot().sendMessage(new ComponentBuilder(player.getName() + " is already muted!").color(ChatColor.RED).create());
+        sender.spigot().sendMessage(new ComponentBuilder(name + " is already muted!").color(ChatColor.RED).create());
         sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
     }
 
-    private void successMessage(CommandSender sender, Player player) {
+    private void successMessage(CommandSender sender, String name) {
         sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
         sender.spigot().sendMessage(new ComponentBuilder("PistonMute").color(ChatColor.GOLD).create());
-        sender.spigot().sendMessage(new ComponentBuilder("Successfully muted " + player.getName() + "!").color(ChatColor.GREEN).create());
+        sender.spigot().sendMessage(new ComponentBuilder("Successfully muted " + name + "!").color(ChatColor.GREEN).create());
         sender.spigot().sendMessage(new ComponentBuilder("----------------").color(ChatColor.DARK_BLUE).create());
     }
 
