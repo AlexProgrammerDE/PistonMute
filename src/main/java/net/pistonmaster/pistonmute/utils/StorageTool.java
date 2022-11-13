@@ -1,6 +1,7 @@
 package net.pistonmaster.pistonmute.utils;
 
 import net.pistonmaster.pistonmute.PistonMute;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -69,7 +70,7 @@ public final class StorageTool {
      * @param player The player to unmute.
      * @return true if player got unmuted and false if not was muted.
      */
-    public static boolean unMutePlayer(Player player) {
+    public static boolean unMutePlayer(OfflinePlayer player) {
         if (dataConfig.contains(player.getUniqueId().toString())) {
             dataConfig.set(player.getUniqueId().toString(), null);
 
@@ -88,13 +89,13 @@ public final class StorageTool {
         }
     }
 
-    public static boolean isMuted(Player player) {
+    public static boolean isMuted(OfflinePlayer player) {
         manageMute(player);
 
         return dataConfig.contains(player.getUniqueId().toString()) || dataConfig.getStringList("hardmutes").contains(player.getUniqueId().toString());
     }
 
-    private static void manageMute(Player player) {
+    private static void manageMute(OfflinePlayer player) {
         Date now = new Date();
 
         if (dataConfig.contains(player.getUniqueId().toString())) {
